@@ -11,5 +11,10 @@ public class IndexController {
         return "index";
     }
 
+    @GetMapping("/chat")
+    public String chat() {
+        return "chat";
+    }
+
 }
 

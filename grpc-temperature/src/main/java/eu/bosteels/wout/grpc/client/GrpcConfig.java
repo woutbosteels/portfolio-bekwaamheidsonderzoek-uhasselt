@@ -12,7 +12,7 @@ public class GrpcConfig {
     public static final int GRPC_SERVER_PORT = 9090;
 
     @Bean
-    public TemperatureServiceGrpc.TemperatureServiceBlockingStub xx() {
+    public TemperatureServiceGrpc.TemperatureServiceBlockingStub stub() {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", GRPC_SERVER_PORT)
                 .usePlaintext().build();
         return TemperatureServiceGrpc.newBlockingStub(channel);

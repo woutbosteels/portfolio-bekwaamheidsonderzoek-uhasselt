@@ -30,6 +30,8 @@ public class MqttListener implements MessageHandler {
         TemperatureMeasurementDTO dto = convertToTemperatureMeasurementDTO(message.getPayload());
         log.debug("dto: {}", dto.toString());
 
+        // convert from JSON to dto to gRPC
+
         var request = TemperatureRequest.newBuilder()
                 .setBuilding(dto.getBuilding())
                 .setRoom(dto.getRoom())
