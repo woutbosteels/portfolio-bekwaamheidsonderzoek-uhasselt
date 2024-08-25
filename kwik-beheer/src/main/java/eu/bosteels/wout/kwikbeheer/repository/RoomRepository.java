@@ -3,9 +3,9 @@ package eu.bosteels.wout.kwikbeheer.repository;
 import eu.bosteels.wout.kwikbeheer.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    Optional<Room> findRoomByRoomNameAndBuildingBuildingName(String room, String building);
+    List<Room> findAllByRoomName(String room);
 }
