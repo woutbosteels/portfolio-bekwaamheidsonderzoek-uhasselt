@@ -67,7 +67,7 @@ public class MqttConfig {
                 try {
                     return objectMapper.readValue(payload.toString(), TemperatureMeasurementDTO.class);
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException("Failed to parse json in MQTT message");
+                    throw new RuntimeException("Failed to parse json in MQTT message", e);
                 }
             }
         };
