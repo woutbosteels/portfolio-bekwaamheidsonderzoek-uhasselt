@@ -1,18 +1,20 @@
-<div layout:fragment="content" class="container mx-auto my-4" xmlns:layout="http://www.w3.org/1999/xhtml">
-    <div class="max-w-sm flex items-center gap-4">
-        <div id="message">
-            Hello World
-        </div>
-        <button class="items-center justify-center px-6 py-2.5 text-
-center text-white duration-200 bg-black border-2 border-black rounded-
-full inline-flex hover:bg-transparent hover:border-black hover:text-
-black focus:outline-none focus-visible:outline-black text-sm focus-
-visible:ring-black"
-                th:hx-get="@{/htmx}"
-                hx-target="#message"
-        >
-            Click me
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Kwik</title>
+    <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/pico.blue.min.css}">
+</head>
+<body>
+<div th:replace="~{header :: header}">...</div>
+<div>
+    <ol id="buildings">
 
-        </button>
+    </ol>
     </div>
-</div>
+</body>
+<script th:src="@{/js/index.js}"></script>
+</html>
