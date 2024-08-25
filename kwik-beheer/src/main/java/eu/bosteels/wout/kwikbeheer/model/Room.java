@@ -12,6 +12,8 @@ public class Room {
     @Id
     private Long id;
 
+    private String roomName;
+
     @ManyToOne
     @JoinColumn(name = "building_id")
     private Building building;

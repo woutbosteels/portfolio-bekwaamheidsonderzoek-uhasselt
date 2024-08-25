@@ -1,9 +1,8 @@
-package eu.bosteels.wout.kwikbeheer;
+package eu.bosteels.wout.kwikbeheer.mqtt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.bosteels.wout.kwikbeheer.model.TemperatureMeasurement;
-import eu.bosteels.wout.kwikbeheer.service.TemperatureService;
+import eu.bosteels.wout.kwikbeheer.service.TemperatureMeasurementService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class MqttConfig {
     private static final Logger log = LogManager.getLogger(MqttConfig.class);
 
     @Autowired
-    private TemperatureService temperatureService;
+    private TemperatureMeasurementService temperatureService;
 
     @Value("${mqtt.hostname}")
     private String mqttHost;
@@ -58,21 +57,22 @@ public class MqttConfig {
             public void handleMessage(Message<?> message) throws MessagingException {
                 log.debug(message.getHeaders());
                 log.debug(message.getPayload());
-                TemperatureMeasurement tempReading = toTempReading(message.getPayload());
-                temperatureService.addTemperature(tempReading);
+
+                TemperatureMeasurementDTO dto = convertToTemperatureMeasurementDTO(message.getPayload());
+                temperatureService.saveTemperatureMeasurement(dto.getBuilding(), dto.getRoom(), dto.getCelsius());
             }
 
-            private TemperatureMeasurement toTempReading(Object payload) {
+            private TemperatureMeasurementDTO convertToTemperatureMeasurementDTO(Object payload) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 try {
-                    return objectMapper.readValue(payload.toString(), TemperatureMeasurement.class);
+                    return objectMapper.readValue(payload.toString(), TemperatureMeasurementDTO.class);
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException("Failed to parse json in MQTT message");
                 }
             }
         };
 
-
     }
+
 }
 

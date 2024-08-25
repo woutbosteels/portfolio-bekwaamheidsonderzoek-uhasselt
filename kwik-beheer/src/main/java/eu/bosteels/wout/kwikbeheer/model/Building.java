@@ -9,6 +9,8 @@ public class Building {
     @Id
     private Long id;
 
+    private String buildingName;
+
     public void setId(Long id) {
         this.id = id;
     }
