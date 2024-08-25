@@ -1,6 +1,8 @@
 package eu.bosteels.wout.kwikbeheer;
 
-import eu.bosteels.wout.kwikbeheer.model.TemperatureReading;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.bosteels.wout.kwikbeheer.model.TemperatureMeasurement;
 import eu.bosteels.wout.kwikbeheer.service.TemperatureService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,8 +15,10 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
 
 @Configuration
 public class MqttConfig {
@@ -49,16 +53,26 @@ public class MqttConfig {
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
-        return message -> {
-            log.debug(message.getHeaders());
-            log.debug(message.getPayload());
-            try {
-                TemperatureReading reading = new TemperatureReading(Float.parseFloat(message.getPayload().toString()));
-                temperatureService.addTemperature(reading);
-            } catch (NumberFormatException e) {
-                throw new RuntimeException(String.format("Failed to parse payload: %s", message.getPayload()));
+        return new MessageHandler() {
+            @Override
+            public void handleMessage(Message<?> message) throws MessagingException {
+                log.debug(message.getHeaders());
+                log.debug(message.getPayload());
+                TemperatureMeasurement tempReading = toTempReading(message.getPayload());
+                temperatureService.addTemperature(tempReading);
+            }
+
+            private TemperatureMeasurement toTempReading(Object payload) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    return objectMapper.readValue(payload.toString(), TemperatureMeasurement.class);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException("Failed to parse json in MQTT message");
+                }
             }
         };
-    }
 
+
+    }
 }
+

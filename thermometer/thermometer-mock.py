@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 import random
 import os
+import json
 
 
 # get env variables set in docker compose
@@ -23,7 +24,15 @@ i = 0
 while True:
     # Simulate temperature variation
     temperature += random.uniform(-0.1 + deviation, 0.1 + deviation)
-    client.publish(topic, round(temperature,2))
+
+    # Create JSON payload
+    payload = {
+        "building": building,
+        "room": room,
+        "celsius": round(temperature, 2)
+    }
+
+    client.publish(topic, json.dumps(payload))
     i += 1
     if i % 50 == 0:
         deviation = random.uniform(-0.05, 0.05)

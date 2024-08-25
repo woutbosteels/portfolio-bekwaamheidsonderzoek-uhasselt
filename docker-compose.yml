@@ -6,17 +6,26 @@ services:
     ports:
       - "1883:1883"
     volumes:
-      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./eclipse-mosquitto-broker/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
-  spring-boot-app:
-    build: ./kwik-beheer
-    container_name: spring-boot-app
-    ports:
-      - "8080:8080"
+  postgres:
+    image: postgres:16.4
     environment:
-      - MQTT_BROKER_URL=tcp://mqtt-broker:1883
-    depends_on:
-      - mqtt-broker
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - TZ=Europe/Brussels
+    ports:
+      - "5432:5432"
+
+  #  spring-boot-app:
+  #    build: ./kwik-beheer
+  #    container_name: spring-boot-app
+  #    ports:
+  #      - "8080:8080"
+  #    environment:
+  #      - MQTT_BROKER_URL=tcp://mqtt-broker:1883
+  #    depends_on:
+  #      - mqtt-broker
 
   #   MQTT Thermometers
   thermometer-bed:

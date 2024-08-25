@@ -1,6 +1,6 @@
 package eu.bosteels.wout.kwikbeheer.service;
 
-import eu.bosteels.wout.kwikbeheer.model.TemperatureReading;
+import eu.bosteels.wout.kwikbeheer.model.TemperatureMeasurement;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,14 +9,13 @@ import java.util.List;
 @Service
 public class TemperatureService {
 
-    private List<TemperatureReading> temperatures = new ArrayList<>();
+    private List<TemperatureMeasurement> temperatures = new ArrayList<>();
 
-    public List<TemperatureReading> getAllTemperatures() {
+    public List<TemperatureMeasurement> getAllTemperatures() {
         return temperatures;
     }
 
-    public void addTemperature(TemperatureReading temperature) {
+    public void addTemperature(TemperatureMeasurement temperature) {
         temperatures.add(temperature);
-
     }
 }
