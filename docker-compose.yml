@@ -1,4 +1,5 @@
 services:
+
   mqtt-broker:
     image: eclipse-mosquitto
     container_name: mqtt-broker
@@ -7,6 +8,17 @@ services:
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
+  spring-boot-app:
+    build: ./kwik-beheer
+    container_name: spring-boot-app
+    ports:
+      - "8080:8080"
+    environment:
+      - MQTT_BROKER_URL=tcp://mqtt-broker:1883
+    depends_on:
+      - mqtt-broker
+
+  #   MQTT Thermometers
   thermometer-bed:
     build: ./thermometer
     container_name: mock-thermometer
@@ -15,7 +27,6 @@ services:
       - ROOM=bedroom
     depends_on:
       - mqtt-broker
-
   thermometer-bath:
     build: ./thermometer
     container_name: thermometer-bath
@@ -30,7 +41,7 @@ services:
     container_name: thermometer-living
     environment:
       - BUILDING=home
-      - ROOM=bathroom
+      - ROOM=livingroom
     depends_on:
       - mqtt-broker
 
@@ -43,12 +54,3 @@ services:
     depends_on:
       - mqtt-broker
 
-  spring-boot-app:
-    build: ./kwik-beheer
-    container_name: spring-boot-app
-    ports:
-      - "8080:8080"
-    environment:
-      - MQTT_BROKER_URL=tcp://mqtt-broker:1883
-    depends_on:
-      - mqtt-broker

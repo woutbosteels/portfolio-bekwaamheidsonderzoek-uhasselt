@@ -28,4 +28,4 @@ while True:
     if i % 50 == 0:
         deviation = random.uniform(-0.05, 0.05)
         i = 0
-    time.sleep(10)
+    time.sleep(20)
