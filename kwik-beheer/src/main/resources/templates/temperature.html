@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:hx-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kwik</title>
+    <link rel="stylesheet" th:href="@{/css/pico.blue.min.css}">
+</head>
+
+<body>
+<div>
+    <main class="container">
+
+        <div hx-ext="ws" th:attr="ws-connect=${ws_uri}"
+             hx-on::ws-after-message="clearInput()"
+        >
+            <div class="grid">
+                <div>
+                    <svg>
+
+                    </svg>
+                </div>
+                <div id="readings" class="container">
+                    <!--        readings come here        -->
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+</div>
+
+<script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+
+<script type="text/javascript" th:src="@{/webjars/htmx-ext-ws/ws.js}">
+
+</script>
+<script>
+    function clearInput() {
+
+    }
+</script>
+</body>
+
+
+<template>
+    <div id="readings" hx-swap-oob="beforeend" th:fragment="temperature-reading(reading)">
+        <div class="container-fluid">
+            <div>
+                <article class="pico-color-indigo-400 pico-background-fuchsia-350">
+                    <div class="pico-color-pumpkin-100" th:text="${reading}"></div>
+                </article>
+            </div>
+        </div>
+    </div>
+</template>
+
+</html>

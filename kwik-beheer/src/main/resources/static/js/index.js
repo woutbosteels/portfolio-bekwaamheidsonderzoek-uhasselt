@@ -55,7 +55,8 @@ getRooms = (id) => {
                     '</h5>' +
                     '</header>' +
                     '<body>' +
-                    room.id +
+                    '<a href="/room/' + room.id + '/temperature' + '">' +
+                    'Show temperature readings</a>' +
                     '</body>' +
                     '</article>'
                 );

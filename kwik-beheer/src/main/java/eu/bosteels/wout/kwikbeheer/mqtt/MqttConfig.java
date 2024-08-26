@@ -2,6 +2,7 @@ package eu.bosteels.wout.kwikbeheer.mqtt;
 
 import eu.bosteels.wout.kwikbeheer.service.TemperatureMeasurementService;
 import eu.bosteels.wout.kwikbeheer.websockets.SocketHandler;
+import eu.bosteels.wout.kwikbeheer.websockets.TempSocketHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +42,8 @@ public class MqttConfig {
 
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
-    public MessageHandler handler(SocketHandler socketHandler, TemperatureMeasurementService temperatureService) {
-        return new MqttListener(socketHandler, temperatureService);
+    public MessageHandler handler(SocketHandler socketHandler, TempSocketHandler tempSocketHandler, TemperatureMeasurementService temperatureService) {
+        return new MqttListener(socketHandler, tempSocketHandler, temperatureService);
     }
 
 }

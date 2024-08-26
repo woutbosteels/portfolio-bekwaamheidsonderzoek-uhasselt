@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:hx-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -19,8 +18,6 @@ We do not recommend including all colors on a production site. You should includ
 
 
 </head>
-
-
 
 <template>
     <div id="messages" hx-swap-oob="beforeend" th:fragment="incoming-message(message)">
@@ -97,6 +94,7 @@ We do not recommend including all colors on a production site. You should includ
     <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 
     <script type="text/javascript" th:src="@{/webjars/htmx-ext-ws/ws.js}">
+
     </script>
     <script>
         function clearInput() {
