@@ -37,6 +37,8 @@ logger.info("connected to broker")
 deviation = 0
 i = 0
 
+
+time.sleep(random.uniform(1, 10))
 while True:
     # Simulate temperature variation
     temperature += random.uniform(-0.1 + deviation, 0.1 + deviation)

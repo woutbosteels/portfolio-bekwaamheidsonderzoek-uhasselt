@@ -11,10 +11,17 @@
 <body>
 <div th:replace="~{header :: header}">...</div>
 <div>
-    <ol id="buildings">
-
-    </ol>
+    <div class="container-fluid">
+        <h5>Buildings</h5>
+        <div id="buildings" class="grid">>
+        </div>
     </div>
+    <div class="container-fluid">
+        <h5>Rooms</h5>
+        <div id="rooms" class="grid">
+        </div>
+    </div>
+</div>
 </body>
 <script th:src="@{/js/index.js}"></script>
 </html>

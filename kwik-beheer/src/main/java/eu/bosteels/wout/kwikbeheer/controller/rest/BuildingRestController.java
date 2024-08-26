@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController()
-@RequestMapping("buildings")
+@RequestMapping("api/buildings")
 public class BuildingRestController {
 
     @Autowired
@@ -25,9 +25,4 @@ public class BuildingRestController {
         return buildingService.getAllBuildings();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Building> getBuildingById(@PathVariable("id") Long id) {
-        Optional<Building> b = buildingService.findBuildingById(id);
-        return b.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
 }
