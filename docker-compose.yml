@@ -19,7 +19,7 @@ services:
 
   kwik-spring-boot-app:
       build: ./kwik-beheer
-      container_name: kwik
+      container_name: kwik-spring-boot-app
       ports:
         - "8080:8080"
       environment:
@@ -45,6 +45,14 @@ services:
     container_name: grpc-temperature-reader
     ports:
       - "9090:9090"
+
+  graphql-client:
+    build: ./graphql-client
+    container_name: graphql-client
+    environment:
+      - GRAPHQL_URL=kwik-spring-boot-app
+    depends_on:
+      - kwik-spring-boot-app
 
 
   #######   MQTT Thermometers ########

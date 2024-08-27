@@ -12,7 +12,7 @@ logger = logging.getLogger('mylogger')
 
 logger.setLevel(logging.DEBUG)
 logFormatter = logging.Formatter \
-    ("%(name)-12s %(asctime)s %(levelname)-8s %(filename)s:%(funcName)s %(message)s")
+    (" %(asctime)s %(levelname)-8s %(message)s")
 consoleHandler = logging.StreamHandler(stdout)
 consoleHandler.setFormatter(logFormatter)
 logger.addHandler(consoleHandler)
