@@ -6,7 +6,7 @@
 
     <groupId>eu.bosteels</groupId>
 
-    <artifactId>grpc</artifactId>
+    <artifactId>mqtt-grpc-bridge</artifactId>
     <packaging>jar</packaging>
     <name>mqtt-grpc-bridge</name>
     <version>1.0.0</version>

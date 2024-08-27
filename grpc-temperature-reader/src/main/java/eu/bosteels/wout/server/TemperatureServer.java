@@ -1,4 +1,4 @@
-package eu.bosteels.wout.grpc.server;
+package eu.bosteels.wout.server;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;

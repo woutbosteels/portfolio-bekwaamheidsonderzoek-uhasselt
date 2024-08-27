@@ -22,7 +22,7 @@ import java.util.*;
 @Component
 public class TempSocketHandler extends TextWebSocketHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(SocketHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(TempSocketHandler.class);
 
     private final Map<Long, List<WebSocketSession>> sessionsMap = new HashMap<>();
 
@@ -70,23 +70,18 @@ public class TempSocketHandler extends TextWebSocketHandler {
         sessions.remove(session);
     }
 
-    public void tempToRoom(String message, String building, String room) {
-        logger.debug("tempToRoom:");
-        logger.debug(message);
-        logger.debug(building);
-        logger.debug(room);
+    public void tempToRoom(String ts, float celsius, String building, String room) {
+        logger.info("tempToRoom: {},{},{},{}", ts, celsius, building, room);
         Optional<Room> roomOptional = roomService.getRoomIfExists(building, room);
-
         if (roomOptional.isPresent()) {
-
             List<WebSocketSession> webSocketSessions = sessionsMap.get(roomOptional.get().getId());
-
             if (webSocketSessions != null && !webSocketSessions.isEmpty()) {
-                    sendMessageToSessions(message, webSocketSessions);
+                sendMessageToSessions(tempReadingHTML(room, building, ts, celsius), webSocketSessions);
+            } else {
+                logger.info("No WS sessions waiting for reading");
             }
-
         } else {
-            logger.debug("No room with building " + building + " and name " + room);
+            logger.info("No room with building {} and name {}", building, room);
         }
     }
 
@@ -95,7 +90,7 @@ public class TempSocketHandler extends TextWebSocketHandler {
             logger.info(webSocketSession.toString());
             try {
                 if (webSocketSession.isOpen()) {
-                    webSocketSession.sendMessage(new TextMessage(tempReadingHTML(message)));
+                    webSocketSession.sendMessage(new TextMessage(message));
                 }
             } catch (IOException e) {
                 logger.debug("Unable to send message to {}", webSocketSession);
@@ -104,8 +99,15 @@ public class TempSocketHandler extends TextWebSocketHandler {
 
     }
 
-    private String tempReadingHTML(String temp) {
-        Context context = new Context(null, Map.of("reading", temp));
+    private String tempReadingHTML(String room, String building, String ts, float celsius)
+    {
+        Map<String, Object> map = new HashMap<>();
+//        map.put("message", message);
+        map.put("ts", ts);
+        map.put("celsius", celsius);
+        map.put("building", building);
+        map.put("room", room);
+        Context context = new Context(null, map);
         return templateEngine.process("temperature", Set.of("temperature-reading"), context);
     }
 }

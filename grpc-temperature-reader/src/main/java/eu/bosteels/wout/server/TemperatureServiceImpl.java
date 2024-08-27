@@ -1,4 +1,4 @@
-package eu.bosteels.wout.grpc.server;
+package eu.bosteels.wout.server;
 
 import eu.bosteels.wout.grpc.TemperatureRequest;
 import eu.bosteels.wout.grpc.TemperatureResponse;
@@ -6,6 +6,7 @@ import eu.bosteels.wout.grpc.TemperatureServiceGrpc.TemperatureServiceImplBase;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class TemperatureServiceImpl extends TemperatureServiceImplBase {
 

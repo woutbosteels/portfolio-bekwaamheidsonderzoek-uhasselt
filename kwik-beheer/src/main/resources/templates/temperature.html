@@ -11,49 +11,43 @@
 
 <body>
 <div>
-    <main class="container">
+    <main class="container" style="padding: 1rem">
+        <div class="grid">
+            <article>
+                <header>Temperature readings</header>
+                <hr>
+                <div hx-ext="ws" th:attr="ws-connect=${ws_uri}"
+                     hx-on::ws-after-message="messageReceived()"
+                >
+                    <div id="readings">
+                        <p id="no-messages" style="display: none">No readings yet.</p>
+                        <!--        readings come here        -->
+                    </div>
 
-        <div hx-ext="ws" th:attr="ws-connect=${ws_uri}"
-             hx-on::ws-after-message="clearInput()"
-        >
-            <div class="grid">
-                <div>
-                    <svg>
+                </div>
+            </article>
 
-                    </svg>
-                </div>
-                <div id="readings" class="container">
-                    <!--        readings come here        -->
-                </div>
-            </div>
         </div>
-
-
     </main>
 </div>
 
 <script type="text/javascript" th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
 
-<script type="text/javascript" th:src="@{/webjars/htmx-ext-ws/ws.js}">
+<script type="text/javascript" th:src="@{/webjars/htmx-ext-ws/ws.js}"></script>
 
-</script>
-<script>
-    function clearInput() {
-
-    }
-</script>
 </body>
 
 
 <template>
-    <div id="readings" hx-swap-oob="beforeend" th:fragment="temperature-reading(reading)">
-        <div class="container-fluid">
+    <div id="readings" hx-swap-oob="afterbegin" th:fragment="temperature-reading(reading)">
             <div>
+                <small><span id="time" th:text="${ts}"></span></small>
                 <article class="pico-color-indigo-400 pico-background-fuchsia-350">
-                    <div class="pico-color-pumpkin-100" th:text="${reading}"></div>
+                    <div class="pico-color-pumpkin-100">
+                        It is <span id="celsius" th:text="${celsius}"></span> Celsius in the <span id="room" th:text="${room}"></span> at <span id="building" th:text="${building}"></span>
+                    </div>
                 </article>
-            </div>
-        </div>
+                </div>
     </div>
 </template>
 

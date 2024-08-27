@@ -17,8 +17,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static java.time.format.FormatStyle.LONG;
-import static java.time.format.FormatStyle.SHORT;
+import static java.time.format.FormatStyle.*;
 
 @Component
 public class MqttListener implements MessageHandler  {
@@ -47,13 +46,13 @@ public class MqttListener implements MessageHandler  {
 
         // TODO: pass dto to socketHandler and let it generate a nicer formatted html message
         LocalDateTime now = LocalDateTime.now();
-        String ts = now.format(DateTimeFormatter.ofLocalizedTime(SHORT));
+        String ts = now.format(DateTimeFormatter.ofLocalizedTime(MEDIUM));
             int temp = (int) dto.getCelsius();
         String chatMessage =
                 ts + " : " +
                 "It is " + temp + "° Celsius in the " + dto.getRoom() + " at " + dto.getBuilding() + ".";
         socketHandler.sendMessageToChatRoom(chatMessage);
-        tempSocketHandler.tempToRoom(chatMessage, dto.getBuilding(), dto.getRoom());
+        tempSocketHandler.tempToRoom(ts, dto.getCelsius(), dto.getBuilding(), dto.getRoom());
 
     }
 

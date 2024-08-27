@@ -17,17 +17,37 @@ services:
     ports:
       - "5432:5432"
 
-  #  spring-boot-app:
-  #    build: ./kwik-beheer
-  #    container_name: spring-boot-app
-  #    ports:
-  #      - "8080:8080"
-  #    environment:
-  #      - MQTT_BROKER_URL=tcp://mqtt-broker:1883
-  #    depends_on:
-  #      - mqtt-broker
+  kwik-spring-boot-app:
+      build: ./kwik-beheer
+      container_name: kwik
+      ports:
+        - "8080:8080"
+      environment:
+        - MQTT_BROKER_URL=tcp://mqtt-broker:1883
+      depends_on:
+        - mqtt-broker
+        - postgres
 
-  #   MQTT Thermometers
+  mqtt-grpc-bridge-spring-boot-app:
+    build: ./mqtt-grpc-bridge
+    container_name: mqtt-grpc-bridge
+    ports:
+      - "7070:7070"
+    environment:
+      - GRPC_HOSTNAME=grpc-temperature-reader
+      - MQTT_BROKER_URL=tcp://mqtt-broker:1883
+    depends_on:
+      - mqtt-broker
+      - grpc-temperature-reader
+
+  grpc-temperature-reader:
+    build: ./grpc-temperature-reader
+    container_name: grpc-temperature-reader
+    ports:
+      - "9090:9090"
+
+
+  #######   MQTT Thermometers ########
   thermometer-bed:
     build: ./thermometer
     container_name: mock-thermometer
