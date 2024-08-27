@@ -42,12 +42,15 @@ public class MqttListener implements MessageHandler  {
         log.debug(message.getPayload());
         TemperatureMeasurementDTO dto = convertToTemperatureMeasurementDTO(message.getPayload());
         log.debug("dto: {}", dto.toString());
-        temperatureService.saveTemperatureMeasurement(dto.getBuilding(), dto.getRoom(), dto.getCelsius());
 
         // TODO: pass dto to socketHandler and let it generate a nicer formatted html message
         LocalDateTime now = LocalDateTime.now();
         String ts = now.format(DateTimeFormatter.ofLocalizedTime(MEDIUM));
-            int temp = (int) dto.getCelsius();
+        int temp = (int) dto.getCelsius();
+
+
+        temperatureService.saveTemperatureMeasurement(dto.getBuilding(), dto.getRoom(), dto.getCelsius(), now);
+
         String chatMessage =
                 ts + " : " +
                 "It is " + temp + "° Celsius in the " + dto.getRoom() + " at " + dto.getBuilding() + ".";
